@@ -19,13 +19,18 @@ parted -a opt /dev/$disk mkpart primary ext4 50% 100% > /dev/null 2>&1
 parted /dev/sda print
 
 
-# Mounting && swpaon
+# Make file system && swapon
+
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4 /dev/sda4
+mkfs.ext4 /dev/sda3
+swapon /dev/sda2
+
+# Mounting
 
 mount /dev/sda4 /mnt
 mkdir /mnt/home
 mount /dev/sda3 /mnt/home
-
-swapon /dev/sda2
 
 
 # Package installing
