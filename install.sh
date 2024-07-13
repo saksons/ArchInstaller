@@ -43,13 +43,8 @@ pacstrap -i /mnt base base-devel linux linux-firmware linux-headers sudo network
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
 
-# Chrooting
-
-arch-chroot /mnt /bin/bash
-
-
 # Configuring
-
+echo <<EOF
 sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
@@ -67,3 +62,11 @@ useradd -m -g user -G wheel -s /bin/bash soks
 passwd soks
 
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL' /etc/sudoers
+EOF >> /mnt/home/install.sh
+
+chmod 555 /mnt/home/install.sh
+
+
+# Chrooting && run install in chroot
+
+arch-chroot /mnt /bin/bash -c "sudo chmod"
